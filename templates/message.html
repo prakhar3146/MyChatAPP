@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatter.io</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename='css/style.css') }}" />
+
+    <meta name="description" content="This is a website created by Prakhar using HTML, CSS and JavaScript.">
+     <!-- Socket.io client-side script from local server -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
+        integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
+        crossorigin="anonymous"></script>
+
+    <title>Document</title>
+</head>
+
+<body>
+    <nav id="welcome-panel">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" id="chat-logo" alt="Chat Logo">
+        <h1 id="welcome-note">Welcome to Prakhar's Chatroom</h1>
+    </nav>
+    <div class="messages">
+        <!-- <input placeholder="Message" id="messageInput" /> -->
+        <div class="message-left">Prakhar</div>
+        <div class="message-right">User</div>
+    </div>
+    <div class="send">
+        <form action="#" id="send-container">
+            <input type="text" name="messageInp" id="messageInput" placeholder="Type your message here">
+            <button type="submit" id="submit-btn">Send</button>
+        </form>
+    </div>
+
+    <script>
+        const socket = io();
+
+        let messageContainer = document.querySelector(".messages");
+        // Defining a function to append messages
+        function appendMessage(message, position) { 
+            let messageElementNew = document.createElement("div"); 
+            messageElementNew.innerText = message; // Use the message parameter 
+            messageElementNew.classList.add("message"); // Uncomment if needed 
+            messageElementNew.classList.add(position); // Use the position parameter 
+            messageContainer.appendChild(messageElementNew);
+        }
+        socket.on("connect", () => {
+            let p = document.createElement("p")
+            p.classList.add("user-notifications")
+            p.innerText = "You are connected"
+            messageContainer.appendChild(p)
+        })
+        let messageInput = document.getElementById("messageInput");
+    
+        const form = document.getElementById('send-container')
+        form.addEventListener('submit', (e) => { 
+            e.preventDefault(); // Prevent the default form submission
+             let message = messageInput.value; 
+             if (message) { 
+                appendMessage(`You:${message}`,'message-right')
+                socket.emit("send", `${message}`); 
+             messageInput.value = ""; // Clear the input field
+              } });
+        const name = prompt("Enter Your Name To Join")
+        socket.emit('new-user-joined', name)
+        // It will listen to the event that was sent by the app.py(server) using the send function and 
+        //catch the message that was sent by the send function and then create a paragraph element
+        // It will then alter/add the innertext to the paragraph element and append it to the parent 
+        //class that we named as messages under the div tag
+        socket.on("user-joined",(message) =>{
+            // let messageElement = document.createElement("div")
+            // messageElement.innerText = message.message
+            // messageElement.classList.add("user-notifications")
+            // messageContainer.appendChild(messageElement)
+            appendMessage(message.message,'message-right')
+        });
+        //Handling Disconnection events
+        socket.on('user-disconnected',(message) =>{
+            let messageElement = document.createElement("div")
+            messageElement.innerText = message.message
+            messageElement.classList.add("user-notifications")
+            messageContainer.appendChild(messageElement)
+        })
+        socket.on('recieve',(data) =>{
+            let { message } = '';
+
+        // Determine sender type based on message format or content
+        message = data.message
+        sender = data.name
+        console.log(sender)
+        let senderType = 'message-left'
+        // if (sender == 'you') {
+        //     senderType = 'message-right'
+        // }
+        // const senderType = message.startsWith('You:') ? 'message-right' : 'message-left';
+            appendMessage(message,senderType)
+        })
+        
+
+
+    </script>
+</body>
+
+</html>

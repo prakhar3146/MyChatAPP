@@ -1,0 +1,126 @@
+
+@keyframes fadeInAnimation {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+body{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+#main-background{
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+
+}
+
+
+#welcome-panel{
+    display: flex;
+
+    justify-content:center;
+    border: 0px solid rgb(99, 93, 93);
+    background-color: rgb(132, 189, 82);
+    align-items: center;
+    flex-direction: row;
+    text-shadow: 5px 5px 15px #181a1591;
+    box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.5); /* Horizontal offset, Vertical offset, Blur radius, Color */
+    animation: fadeInAnimation 3s forwards;
+    object-fit:fill;
+}
+#chat-logo{
+    height: 10%;
+    width: 10%;
+    object-fit: contain;
+    object-fit:fill;
+}
+
+.messages{
+    
+    display: flex;
+    height: 70vh;
+    width: 70vw;
+    margin: 10px;
+    position: relative;  
+
+    border: 3px solid #342c2c75;
+    align-items: flex-start;
+   
+    flex-direction: column;
+    animation: fadeInAnimation 3s forwards;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    background-color: rgb(61 90 119);
+    object-fit: fill;
+    box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.5); /* Horizontal offset, Vertical offset, Blur radius, Color */
+    margin-bottom: 13px;
+    padding: 13px;
+    overflow-y: auto;
+}
+.message-left{
+  
+    /* float: left;
+    clear: both; */
+    display: flex;
+    background-color: gray;
+    margin:17px 12px;
+    width: 20%;
+    padding: 10px;
+    border:2px solid black;
+    border-radius: 10px;
+    align-self: flex-start;
+    justify-content: center;
+
+}
+.message-right{
+    /* float: right;
+    clear: both; */
+    display: flex;
+    width: 20%;
+    background-color: gray;
+    margin:17px 12px;
+    padding: 10px;
+    border:2px solid black;
+    position: absolute;         /* Position it absolutely within the container */
+    bottom: 60%;                  /* Align to the bottom of the container */
+    right: 0;                   /* Align to the right of the container */
+    border-radius: 10px;
+    justify-content: center;
+    align-self: flex-end;
+}
+#send-container{
+    
+    border-collapse: collapse;
+    object-fit:fill;
+   
+    
+}
+#messageInp{
+    height: 5vh;
+    width: 60vw;
+    margin : 5px;
+    border: 2px solid black;
+    border-radius: 6px;
+    object-fit:fill;
+}
+
+#submit-btn{
+    cursor: pointer;
+    border: 2px solid black;
+    border-radius: 6px;
+    height: 34px;
+    object-fit:fill;
+}
