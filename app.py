@@ -3,6 +3,7 @@ from flask_socketio import SocketIO, send, emit
 from flask_mysqldb import MySQL
 import datetime as dt
 import re
+from utils import hash_password,check_password
 
 app = Flask(__name__)
 app.secret_key = "Hello12345"
@@ -75,11 +76,17 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        pattern = re.fullmatch(r"^(\w)+$",username)
+        if not pattern: 
+            return render_template('login.html', error="Only Alphanumeric Characters are allowed in the Username!")
+       
         cursor = mysql.connection.cursor()
         cursor.execute("SELECT username, password FROM chat_app_users WHERE username=%s", (username,))
         user = cursor.fetchone()
         cursor.close()
-        if user and password == user[1]:
+        #Comparing the user provided password with the hashed password stored in the database
+        match_pwd = check_password(hashed_password=user[1].encode('utf-8'), user_entered_password= password)
+        if user and match_pwd:
             session['username'] = user[0]
             return redirect(url_for('message'))
         else:
@@ -91,17 +98,25 @@ def register():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
-        confirm_password = password = request.form.get('confirm-password')
+        confirm_password = request.form.get('confirm-password')
         cursor = mysql.connection.cursor()
         # Regular expression to allow only alphanumeric characters and underscores 
-        pattern = re.compile(r'^[\w]+$') 
-        if not pattern.match(username): 
-            return render_template('login.html', error="Only Alphanumeric Characters are allowed in the Username!")
-       
+        pattern = re.fullmatch(r"^(\w)+$",username) 
+        if not pattern: 
+            return render_template('register.html', error="Only Alphanumeric Characters are allowed in the Username!")
+        #Check if the password is not empty
+        if len(password) < 8:
+            return render_template('register.html', error="The password has to be a minimum of 8 characters")
+        
         if password!=confirm_password:
-            return render_template('login.html', error="The password and the confirm password sections did not match!")
+            return render_template('register.html', error="The entred password and the confirm password sections did not match!")
+        #Checking if the username already exists
+        cursor.execute("SELECT username FROM chat_app_users WHERE username=%s", (username,))
+        user = cursor.fetchone()
+        if user:
+            return render_template('register.html', error="The username is already taken!\n Please try some other username")
         query = "INSERT INTO chat_app_users (username, password, joining_date) VALUES (%s, %s, %s)"
-        cursor.execute(query, (username, password, dt.datetime.now()))
+        cursor.execute(query, (username, hash_password(password), dt.datetime.now()))
         mysql.connection.commit()
         cursor.close()
         return redirect(url_for('login'))

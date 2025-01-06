@@ -52,7 +52,7 @@ justify-content: space-around;
     opacity: 0.8;
     font: bold;
 
-    margin: 20px 30px;
+    margin: auto;
     padding: 20px 20px;
     text-decoration:solid;
 
@@ -60,7 +60,7 @@ justify-content: space-around;
     color: white;
     align-items: center;
     align-self: flex-end;
-    margin-right: 10px;
+    
     position: -webkit-sticky;
     background-color: black;
     /* backdrop-filter: blur(2px); */
@@ -78,6 +78,27 @@ p{
     align-self: center;
     font-size: x-large;
 }
+.button {
+    display: flex;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #010102;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    max-width: 20%;
+    margin: auto;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
     </style>
 </head>
 <body>
@@ -87,6 +108,8 @@ p{
         </video>
     </header>
     <div class="container">
+        <a id="register-now"href="{{ url_for('register') }}" class="button" >Register Now</a>
+        <a id="register-now"href="{{ url_for('home') }}" class="button" >Back To Homepage</a>
     <h1>Login Page</h1>
     {% if error %}
         <p style="color: red;">{{ error }}</p>

@@ -4,10 +4,41 @@ import datetime as dt
 
 import pandas as pd
 from openpyxl import load_workbook
+import bcrypt
 
 
-# import retry as rt
+#The function encrypts the string provided as an argument and returns it
+def hash_password(password):
+    # Generate a salt
+    salt = bcrypt.gensalt()
+    
+    # Hash the password with the salt
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
+    
+    return hashed_password
 
+# Example usage
+# password = "anshu123"
+# hashed_password = hash_password_bcrypt(password)
+# print(f"Original password: {password}")
+# print(f"Bcrypt hashed password: {hashed_password.decode('utf-8')}")
+
+
+# This would be the hashed password stored in your database
+hashed_password = b'$2b$12$K7Q16lOZ/.Jp6R.lXhQ..eFh5eYpQnVx8xNlp8AGvH2ZZZszAqC82'
+
+# This is the password entered by the user
+incoming_password = 'user_password'
+def check_password(hashed_password, user_entered_password):
+    # Check if the incoming password matches the hashed password
+    if bcrypt.checkpw(user_entered_password.encode('utf-8'), hashed_password):
+        print("Password matches!")
+        return True
+    else:
+        print("Password does not match.")
+        return False
+
+#check_password(hashed_password=hashed_password, user_entered_password= incoming_password)
 
 # This Function takes a list or a string as an input, and returns the lowercase values of the string/list elements after removing all the spaces from it.
 # If the parameter  'remove_punc' is passed as True, the function will remove all the punctuations from the element/elements in addition to the aforementioned.

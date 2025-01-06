@@ -37,6 +37,23 @@ h1,h2,h3,h4,a{
     font-family: cursive;
     font-size: x-large;
 }
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
+
     </style>
 </head>
 <body>
@@ -55,10 +72,10 @@ h1,h2,h3,h4,a{
         {% else %} 
         <h1>Please Log in to continue</h1>
         <h2>Alredy a member?</h2><br>
-        <a id="login" href="{{ url_for('login') }}">Login</a> 
+        <a id="login" href="{{ url_for('login') }}" class="button" >Login</a> 
         <h3>Not a member?</h3><br>
         <h4>Register now and start chatting</h4><br>
-        <a id="register-now"href="{{ url_for('register') }}">Register Now</a> <!-- Add this link --> 
+        <a id="register-now"href="{{ url_for('register') }}" class="button" >Register Now</a> <!-- Add this link --> 
         {% endif %}
 
     </div>
