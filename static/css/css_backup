@@ -1,0 +1,172 @@
+
+/* Fade-in Animation */
+@keyframes fadeInAnimation {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Body */
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* Main Background */
+#main-background {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+}
+
+/* Welcome Panel */
+#welcome-panel {
+    display: flex;
+    justify-content: center;
+    border: 0px solid rgb(99, 93, 93);
+    background-color: rgb(132, 189, 82);
+    align-items: center;
+    flex-direction: row;
+    text-shadow: 5px 5px 15px #181a1591;
+    box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.5);
+    animation: fadeInAnimation 3s forwards;
+    object-fit: fill;
+}
+
+/* Chat Logo */
+#chat-logo {
+    height: 10%;
+    width: 10%;
+    object-fit: contain;
+    object-fit: fill;
+}
+
+/* Messages Container */
+.messages {
+    display: flex;
+    flex-direction:row;
+    /* Stack messages vertically */
+    justify-content: flex-start;
+    /* Align messages to the top */
+    align-items: stretch;
+    /* Let messages span the container width */
+    height: 70vh;
+    /* Maintain vertical size */
+    width: 70vw;
+    /* Maintain horizontal size */
+    border: 3px solid #342c2c75;
+    background-color: rgb(61, 90, 119);
+    padding: 13px;
+    margin: 10px;
+    margin-bottom: 13px;
+    overflow-y: auto;
+    /* Enable vertical scrolling */
+    overflow-x: hidden;
+    /* Prevent horizontal scrolling */
+    box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Message Elements */
+.message-left,.message-right {
+
+    display: flex;
+    /* background-color: gray; */
+    margin: 7px 12px;
+    width: 40%;
+    height: -webkit-fill-available;
+    padding: 10px;
+    /* border: 2px solid black; */
+    border-radius: 1px;
+    align-self: flex-start;
+    justify-content: space-around;
+    flex-direction: column;
+
+    /* overflow-y: auto; */
+    /* Ensure vertical scrolling for long messages */
+}
+
+.message-left {
+    align-self: flex-start;
+    /* overflow-y: auto; */
+}
+
+.message-right {
+    align-self: flex-end;
+    /* overflow-y: auto; */
+}
+
+/* Message Left */
+.on-left {
+    display: flex;
+    max-width: fit-content;
+    /* Limit the width of messages */
+    margin: 10px 0;
+    /* Add spacing between messages */
+    padding: 10px;
+    border: 2px solid black;
+    flex-direction: column;
+    border-radius: 10px;
+    word-wrap: break-word;
+    /* Break long words */
+    white-space: pre-wrap;
+    /* Preserve spaces and line breaks */
+    background-color: rgb(52, 101, 174);
+    align-self: center;
+    justify-content: center;
+}
+
+/* Message Right */
+.on-right {
+    display: flex;
+    max-width: fit-content;
+    /* Limit the width of messages */
+    margin: 10px 0;
+    /* Add spacing between messages */
+    padding: 10px;
+    border: 2px solid black;
+    flex-direction: column;
+    border-radius: 10px;
+    word-wrap: break-word;
+    /* Break long words */
+    white-space: pre-wrap;
+    /* Preserve spaces and line breaks */
+    background-color: rgb(87, 101, 121);
+    align-self: center;
+    justify-content: center;
+
+}
+
+/* Send Container */
+#send-container {
+    border-collapse: collapse;
+    object-fit: fill;
+}
+
+/* Message Input */
+#messageInp {
+    height: 5vh;
+    width: 60vw;
+    margin: 5px;
+    border: 2px solid black;
+    border-radius: 6px;
+    object-fit: fill;
+}
+
+/* Submit Button */
+#submit-btn {
+    cursor: pointer;
+    border: 2px solid black;
+    border-radius: 6px;
+    height: 34px;
+    object-fit: fill;
+}

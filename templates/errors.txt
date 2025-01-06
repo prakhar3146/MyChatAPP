@@ -1,0 +1,5 @@
+127.0.0.1 - - [23/Dec/2024 03:58:04] "GET /socket.io/?EIO=4&transport=polling&t=PFmV1Vt&sid=J6Z6aBjFumwz3AXtAAAS HTTP/1.1" 200 -
+127.0.0.1 - - [23/Dec/2024 03:58:05] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [23/Dec/2024 03:58:05] "GET /socket.io/?EIO=4&transport=websocket&sid=J6Z6aBjFumwz3AXtAAAS HTTP/1.1" 200 -        
+127.0.0.1 - - [23/Dec/2024 03:58:05] "GET /socket.io/?EIO=4&transport=polling&t=PFmV1gF HTTP/1.1" 200 -
+127.0.0.1 - - [23/Dec/2024 03:58:05] "POST /socket.io/?EIO=4&transport=polling&t=PFmV1gN&sid=vhawvOMe65t-YrHhAAAU HTTP/1.1" 200 -

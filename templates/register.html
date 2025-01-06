@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        #myVideo {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+    width: auto;
+    height: auto;
+    /* Ensures the video covers the background */
+    z-index: -1;
+    overflow: hidden;
+    /* Keeps video behind the content */
+}
+.container{
+    display: flex;
+    flex-direction: column;
+    background-color: beige;
+    opacity: 0.7;
+    padding-top: 10%;
+    padding-bottom: 10%;
+}
+h1,form{
+    
+    align-self: center;
+    opacity: 1;
+    font-size: larger;
+    font-weight: bolder;
+}
+#submit {
+    width: 100px;
+    height: 60px;
+
+
+    
+justify-content: space-around;
+    border-radius: 10px;
+    
+
+    opacity: 0.8;
+    font: bold;
+
+    margin: 20px 30px;
+    padding: 20px 20px;
+    text-decoration:solid;
+
+    display: flex;
+    color: white;
+    align-items: center;
+    align-self: center;
+    margin-right: 10px;
+    position: -webkit-sticky;
+    background-color: black;
+    /* backdrop-filter: blur(2px); */
+
+}
+h1{
+    font-size: xx-large;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+#submit:hover {
+
+    background-color: lightgray;
+    color: rgb(245, 242, 242);
+
+}
+    </style>
+</head>
+<body>
+    <header>
+        <video autoplay="" muted="" loop="" id="myVideo">
+            <source src="{{ url_for('static', filename='videos/background_video.mp4') }}" type="video/mp4">
+        </video>
+    </header>
+    <div class="container">
+    <h1>Registration Page</h1>
+    <form method="POST" action="/register">
+        <label for="username">Username :  </label>
+        <input type="text" id="username" placeholder="Select your username"  name="username" required><br><br>
+        <label for="password">Password :  </label>
+        <input type="password" id="password"  placeholder="Enter your password"  name="password" required><br><br>
+        <label for="confirm-password">Confirm Password :  </label>
+        <input type="confirm-password" id="confirm-password" placeholder="Retype your password"  name="confirm-password" required><br><br>
+        <button type="submit" id="submit" >Submit</button><br>
+    </form>
+</div>
+</body>
+</html>

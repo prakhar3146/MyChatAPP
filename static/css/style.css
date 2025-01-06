@@ -1,4 +1,5 @@
 
+/* Fade-in Animation */
 @keyframes fadeInAnimation {
     from {
         opacity: 0;
@@ -9,118 +10,215 @@
     }
 }
 
-
-body{
+/* Body */
+body {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
+    overflow: auto;
 }
-#main-background{
+
+/* Main Background */
+#main-background {
     position: fixed;
     right: 0;
     bottom: 0;
     min-width: 100%;
     min-height: 100%;
     object-fit: cover;
-
 }
 
-
-#welcome-panel{
+/* Welcome Panel */
+#welcome-panel {
     display: flex;
-
-    justify-content:center;
+    justify-content: center;
     border: 0px solid rgb(99, 93, 93);
     background-color: rgb(132, 189, 82);
     align-items: center;
     flex-direction: row;
     text-shadow: 5px 5px 15px #181a1591;
-    box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.5); /* Horizontal offset, Vertical offset, Blur radius, Color */
+    box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.5);
     animation: fadeInAnimation 3s forwards;
-    object-fit:fill;
+    object-fit: fill;
 }
-#chat-logo{
+
+/* Chat Logo */
+#chat-logo {
     height: 10%;
     width: 10%;
     object-fit: contain;
-    object-fit:fill;
-}
-
-.messages{
-    
-    display: flex;
-    height: 70vh;
-    width: 70vw;
-    margin: 10px;
-    position: relative;  
-
-    border: 3px solid #342c2c75;
-    align-items: flex-start;
-   
-    flex-direction: column;
-    animation: fadeInAnimation 3s forwards;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    background-color: rgb(61 90 119);
     object-fit: fill;
-    box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.5); /* Horizontal offset, Vertical offset, Blur radius, Color */
-    margin-bottom: 13px;
-    padding: 13px;
-    overflow-y: auto;
 }
-.message-left{
-  
-    /* float: left;
-    clear: both; */
+
+/* Messages Container */
+.messages {
     display: flex;
-    background-color: gray;
-    margin:17px 12px;
-    width: 20%;
+    flex-direction: column;
+    /* Stack messages vertically */
+    justify-content: flex-start;
+    /* Align messages to the top */
+    align-items: stretch;
+    /* Let messages span the container width */
+    height: 70vh;
+    /* Maintain vertical size */
+    width: 70vw;
+    /* Maintain horizontal size */
+    border: 3px solid #342c2c75;
+    background-color: rgb(61, 90, 119);
+    padding: 13px;
+    margin: 10px;
+    margin-bottom: 13px;
+    overflow-y: auto;
+    /* Enable vertical scrolling */
+    overflow-x: hidden;
+    /* Prevent horizontal scrolling */
+    box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Message Elements */
+.message-left,.message-right {
+
+    display: flex;
+    /* background-color: gray; */
+    margin: 7px 12px;
+    max-width: 40%;
+    height: fit-content;
     padding: 10px;
-    border:2px solid black;
+    /* border: 2px solid black; */
+    border-radius: 1px;
+    /* align-self: flex-start; */
+    justify-content: space-around;
+    flex-direction: column;
+
+    /* overflow-y: auto; */
+    /* Ensure vertical scrolling for long messages */
+}
+
+.message-left {
+    display: flex;
+    /* max-width: fit-content; */
+    /* Limit the width of messages */
+    margin: 10px 0;
+    /* Add spacing between messages */
+    padding: 10px;
+    border: 2px solid black;
+    flex-direction: column;
     border-radius: 10px;
+    word-wrap: break-word;
+    /* Break long words */
+    white-space: pre-wrap;
+    /* Preserve spaces and line breaks */
+    background-color: rgb(52, 101, 174);
+    left: 0;
     align-self: flex-start;
     justify-content: center;
+}
 
-}
-.message-right{
-    /* float: right;
-    clear: both; */
+.message-right {
     display: flex;
-    width: 20%;
-    background-color: gray;
-    margin:17px 12px;
+    /* max-width: fit-content; */
+    /* Limit the width of messages */
+    margin: 10px 0;
+    /* Add spacing between messages */
     padding: 10px;
-    border:2px solid black;
-    position: absolute;         /* Position it absolutely within the container */
-    bottom: 60%;                  /* Align to the bottom of the container */
-    right: 0;                   /* Align to the right of the container */
+    border: 2px solid black;
+    flex-direction: column;
     border-radius: 10px;
-    justify-content: center;
+    right: 0%;
+    word-wrap: break-word;
+    /* Break long words */
+    white-space: pre-wrap;
+    /* Preserve spaces and line breaks */
+    background-color: rgb(87, 101, 121);
     align-self: flex-end;
+    justify-content: center;
 }
-#send-container{
-    
+
+
+
+
+
+/* Send Container */
+#send-container {
     border-collapse: collapse;
-    object-fit:fill;
-   
-    
+    object-fit: fill;
+  
 }
-#messageInp{
+
+/* Message Input */
+#messageInp {
     height: 5vh;
     width: 60vw;
-    margin : 5px;
+    margin: 5px;
     border: 2px solid black;
     border-radius: 6px;
-    object-fit:fill;
+    object-fit: fill;
 }
 
-#submit-btn{
+/* Submit Button */
+#submit-btn {
     cursor: pointer;
+    width: fit-content;
     border: 2px solid black;
     border-radius: 6px;
     height: 34px;
-    object-fit:fill;
+    object-fit: fill;
+    opacity: 0.8;
+    color: rgb(246, 239, 239) ;/* Text color */ 
+    background-color:rgb(0, 0, 0);
+
+}
+#submit-btn:hover{
+    background-color: rgb(186, 180, 180);
+}
+.user-notifications{
+    display: flex;
+    align-self:center;
+    top: 0%;
+    text-align: center;
+    top: inherit;
+    align-items: center;
+    position: absolute;
+    color: seashell;
+    font-style: normal;
+    font-family: math
+
+}
+
+#logout {
+    width: 100px;
+    height: 60px;
+
+  
+    display: flex;
+
+    flex-direction: row;
+justify-content: space-around;
+    border-radius: 10px;
+    
+
+    opacity: 0.8;
+    font: bold;
+
+    margin: 20px 30px;
+    padding: 20px 20px;
+    text-decoration:solid;
+
+    display: flex;
+    color: white;
+    align-items: center;
+    align-self: flex-end;
+    margin-right: 10px;
+    position: -webkit-sticky;
+    background-color: black;
+    /* backdrop-filter: blur(2px); */
+
+}
+
+#logout:hover {
+
+    background-color: lightgray;
+    color: rgb(245, 242, 242);
+
 }

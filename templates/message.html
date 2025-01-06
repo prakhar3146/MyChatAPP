@@ -17,14 +17,17 @@
 </head>
 
 <body>
-    <nav id="welcome-panel">
+    
+    <nav id="welcome-panel" class="welcome-panel">
         <img src="{{ url_for('static', filename='images/logo.png') }}" id="chat-logo" alt="Chat Logo">
         <h1 id="welcome-note">Welcome to Prakhar's Chatroom</h1>
+        <button id="logout" >Logout</button>
+        <a href="{{ url_for('logout') }}" id="logoutLink" style="display: none;">Logout Link</a>
     </nav>
     <div class="messages">
         <!-- <input placeholder="Message" id="messageInput" /> -->
-        <div class="message-left">Prakhar</div>
-        <div class="message-right">User</div>
+        <div class="message-left">...</div>
+        <div class="message-right">...</div>
     </div>
     <div class="send">
         <form action="#" id="send-container">
@@ -36,51 +39,65 @@
     <script>
         const socket = io();
 
+        let navBar = document.querySelector(".welcome-panel");
         let messageContainer = document.querySelector(".messages");
+        let leftMessageContainer = document.querySelector(".message-left");
+        let rightMessageContainer = document.querySelector(".message-right");
         // Defining a function to append messages
-        function appendMessage(message, position) { 
+        function appendMessage(message, position,container) { 
             let messageElementNew = document.createElement("div"); 
             messageElementNew.innerText = message; // Use the message parameter 
-            messageElementNew.classList.add("message"); // Uncomment if needed 
+            // messageElementNew.classList.add("message"); // Uncomment if needed 
             messageElementNew.classList.add(position); // Use the position parameter 
-            messageContainer.appendChild(messageElementNew);
+            container.appendChild(messageElementNew);
         }
         socket.on("connect", () => {
             let p = document.createElement("p")
             p.classList.add("user-notifications")
             p.innerText = "You are connected"
-            messageContainer.appendChild(p)
+            
+             messageContainer.appendChild(p)
         })
         let messageInput = document.getElementById("messageInput");
     
         const form = document.getElementById('send-container')
+        //Event listener to logout
+        document.addEventListener('DOMContentLoaded', function () {
+    const logoutButton = document.getElementById('logout');
+    const logoutLink = document.getElementById('logoutLink');
+
+    if (logoutButton) {
+        logoutButton.addEventListener('click', function () {
+            // Trigger the hidden logout link to log out the session
+            socket.emit("logout-disconnect")
+            logoutLink.click();
+        });
+    }
+});
+
         form.addEventListener('submit', (e) => { 
             e.preventDefault(); // Prevent the default form submission
              let message = messageInput.value; 
              if (message) { 
-                appendMessage(`You:${message}`,'message-right')
+                appendMessage(`You:${message}`,'message-right',messageContainer)
                 socket.emit("send", `${message}`); 
              messageInput.value = ""; // Clear the input field
               } });
+     
         const name = prompt("Enter Your Name To Join")
+        const currentUser = String(name)
         socket.emit('new-user-joined', name)
-        // It will listen to the event that was sent by the app.py(server) using the send function and 
+        // It will listen to the event that was sent by the app.py(server) using the send/emit function and 
         //catch the message that was sent by the send function and then create a paragraph element
         // It will then alter/add the innertext to the paragraph element and append it to the parent 
         //class that we named as messages under the div tag
         socket.on("user-joined",(message) =>{
-            // let messageElement = document.createElement("div")
-            // messageElement.innerText = message.message
-            // messageElement.classList.add("user-notifications")
-            // messageContainer.appendChild(messageElement)
-            appendMessage(message.message,'message-right')
+    
+            appendMessage(message.message,'message-left',messageContainer)
         });
         //Handling Disconnection events
         socket.on('user-disconnected',(message) =>{
-            let messageElement = document.createElement("div")
-            messageElement.innerText = message.message
-            messageElement.classList.add("user-notifications")
-            messageContainer.appendChild(messageElement)
+           appendMessage(message.message,'message-left',messageContainer)
         })
         socket.on('recieve',(data) =>{
             let { message } = '';
@@ -88,13 +105,15 @@
         // Determine sender type based on message format or content
         message = data.message
         sender = data.name
+        time = data.time
         console.log(sender)
         let senderType = 'message-left'
-        // if (sender == 'you') {
-        //     senderType = 'message-right'
-        // }
+        if (sender !== currentUser) {
+            message = `${sender} : ${message}`
+            appendMessage(message,senderType,messageContainer)
+        }
         // const senderType = message.startsWith('You:') ? 'message-right' : 'message-left';
-            appendMessage(message,senderType)
+            
         })
         
 

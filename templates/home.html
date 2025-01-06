@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+    <style>
+        
+#myVideo {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+    width: auto;
+    height: auto;
+    /* Ensures the video covers the background */
+    z-index: -1;
+    overflow: hidden;
+    /* Keeps video behind the content */
+}
+.welcome{
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(110, 109, 118);
+    opacity: 0.8;
+}
+h1,h2,h3,h4,a{
+    display: flex;
+    align-self: center;
+    color: white;
+    opacity: 1;
+    margin: 2px;
+}
+#login,#register-now {
+    font-family: cursive;
+    font-size: x-large;
+}
+    </style>
+</head>
+<body>
+    <header>
+        <video autoplay="" muted="" loop="" id="myVideo">
+            <source src="{{ url_for('static', filename='videos/background_video.mp4') }}" type="video/mp4">
+        </video>
+    </header>
+    <p>Login Page</p>
+    <div class="welcome" id="welcome-page">
+        
+        
+        {% if username %} 
+        <p>Logged in as: {{ username }}</p>
+         <a href="{{ url_for('logout') }}">Logout</a> 
+        {% else %} 
+        <h1>Please Log in to continue</h1>
+        <h2>Alredy a member?</h2><br>
+        <a id="login" href="{{ url_for('login') }}">Login</a> 
+        <h3>Not a member?</h3><br>
+        <h4>Register now and start chatting</h4><br>
+        <a id="register-now"href="{{ url_for('register') }}">Register Now</a> <!-- Add this link --> 
+        {% endif %}
+
+    </div>
+</body>
+</html>
