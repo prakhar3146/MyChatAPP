@@ -22,17 +22,26 @@
 .container{
     display: flex;
     flex-direction: column;
-    background-color: beige;
-    opacity: 0.7;
-    padding-top: 10%;
-    padding-bottom: 10%;
+    background-color:rgba(105, 66, 66, 0.5);
+    flex-wrap: wrap;
+    margin-top: 4em;
+    margin-left: 5em;
+    margin-right: 5em;
+    align-items: stretch;
+
 }
 h1,form{
     
     align-self: center;
     opacity: 1;
     font-size: larger;
-    font-weight: bolder;
+    font-stretch: extra-expanded;
+    font-weight: 600;
+    font-family: sans-serif;
+    letter-spacing: 2px;
+    color: yellow;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 4px 4px 8px rgba(0, 0, 0, 0.3);
+
 }
 #submit {
     width: 100px;
@@ -58,7 +67,7 @@ justify-content: space-around;
     margin-right: 10px;
     position: -webkit-sticky;
     background-color: black;
-    /* backdrop-filter: blur(2px); */
+    margin: auto;
 
 }
 h1{
@@ -92,36 +101,99 @@ p{
     margin: auto;
     flex-direction: row;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .button:hover {
     background-color: #0056b3;
 }
+body {
+ 
+ background-image: url('static/images/landing.jpg');
+ object-fit: cover;
+ min-height: 100%;
+ min-width: 100%;
+ background-size: cover; /* This will make sure the image covers the entire background */
+ background-repeat: no-repeat; /* Prevents the image from repeating */
+ background-attachment: fixed; /* Ensures the background image stays fixed during scroll */
+ overflow: auto;
+}
+#username,#password,#confirm-password::placeholder{
+    color: gray;
+    font-style: italic;
+    
+    padding: 10px
+}
+input{
+    border: 4px solid black; /* Adjust the width and color as needed */ 
+}
+.hidden 
+{ display: none; 
+} 
+.flash-messages {
+    white-space: break-spaces;
+    font-size: xx-large;
+    color: yellow;
+    font-style: initial;
+    font-family: sans-serif;
+    font-stretch: extra-expanded;
+    font-weight: 600;
+    text-shadow: 2px 2px 4px rgb(0 0 0 / 50%), 4px 4px 8px rgb(0 0 0);
+}
     </style>
 </head>
 <body>
-    <header>
+    <!-- <header>
         <video autoplay="" muted="" loop="" id="myVideo">
             <source src="{{ url_for('static', filename='videos/background_video.mp4') }}" type="video/mp4">
         </video>
-    </header>
+    </header> -->
+    <div class="flash-messages" id="flash">
+        {% with messages = get_flashed_messages() %} 
+        {% if messages %} 
+        <ul> {% for message in messages %}
+             <li>{{ message }}</li> 
+             {% endfor %} </ul> 
+             {% endif %}
+              {% endwith %}
+    </div>
     <div class="container">
-        <a id="register-now"href="{{ url_for('login') }}" class="button" >Login</a>
-        <a id="register-now"href="{{ url_for('home') }}" class="button" >Back To Homepage</a>
-    <h1>Registration Page</h1>
+        <a id="login" href="{{ url_for('login') }}" class="button" >Login</a>
+        <a id="homepage" href="{{ url_for('home') }}" class="button" >Back To Homepage</a>
+    <h1 class="pagename">Registration Page</h1>
     {% if error %}
         <p style="color: red;">{{ error }}</p>
     {% endif %}
-    <form method="POST" action="/register">
-        <label for="username">Username :  </label>
+    <form id="registration-form" class="form" method="POST" action="/register">
+        <label for="username">*Username :  </label>
         <input type="text" id="username" placeholder="Select your username"  name="username" required><br><br>
-        <label for="password">Password :  </label>
+        <label for="password">*Password :  </label>
         <input type="password" id="password"  placeholder="Enter your password"  name="password" required><br><br>
-        <label for="confirm-password">Confirm Password :  </label>
+        <label for="confirm-password">*Confirm Password :  </label>
         <input type="password" id="confirm-password" placeholder="Retype your password"  name="confirm-password" required><br><br>
+        <label for="emailid">Email ID(Optional) :  </label>
+        <input type="text" id="emailid"  placeholder="Enter your email id"  name="emailid"><br><br>
+        <label for="phone">Whatssap no(Optional) :  </label>
+        <input type="text" id="phone"  placeholder="Enter your phone no"  name="phone"><br><br>
         <button type="submit" id="submit" >Submit</button><br>
     </form>
 </div>
+<script> 
+document.addEventListener("DOMContentLoaded", function() {
+     const flashMessages = document.querySelector('.flash-messages ul'); 
+     if (flashMessages && flashMessages.children.length > 0) { 
+        document.body.classList.remove('hidden'); 
+        document.querySelector('.form').classList.add('hidden');
+        document.querySelector('.pagename').classList.add('hidden');  
+        // var childElement = document.getElementById('login'); 
+        // childElement.style.visibility = 'visible';
+        // var childElement = document.getElementById('homepage'); 
+        // childElement.style.visibility = 'visible';
+     }
+    else { 
+        document.body.classList.remove('hidden'); 
+        }
+         });
+</script>
 </body>
 </html>

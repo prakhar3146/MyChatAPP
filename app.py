@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session, url_for
+from flask import Flask, render_template, request, redirect, session, url_for,flash
 from flask_socketio import SocketIO, send, emit
 from flask_mysqldb import MySQL
 import datetime as dt
@@ -40,6 +40,7 @@ def logout_disconnect():
     if username:
         print(f"User disconnected: {username}")
         emit('user-disconnected', {'message': f'{username} left the chat'}, broadcast=True, include_self=False)
+
         redirect(url_for('login'))
 
 @socketio.on('new-user-joined')
@@ -56,6 +57,20 @@ def send_message(message):
     message = message + "\n at " + dt.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
     print("Sender:", sender, "\nmessage:", dict_of_user)
     emit('recieve', {'message': message, 'name': sender}, broadcast=True, include_self=False)
+
+
+def trigger_action(message): 
+    with app.test_request_context('/perform_action', method='POST'): 
+        response = perform_action(message= message) # You can access the response or handle other logic here 
+        print("Flash Response : ",response)
+
+#Defining Routes
+#To flash messages on the frontend from the backend
+@app.route('/perform_action', methods=['POST']) 
+def perform_action(message): # Your action code here 
+    flash(f'{message}') 
+    #return redirect(url_for('index'))
+
 
 @app.route("/")
 def home():
@@ -79,15 +94,30 @@ def login():
         pattern = re.fullmatch(r"^(\w)+$",username)
         if not pattern: 
             return render_template('login.html', error="Only Alphanumeric Characters are allowed in the Username!")
-       
+        
         cursor = mysql.connection.cursor()
-        cursor.execute("SELECT username, password FROM chat_app_users WHERE username=%s", (username,))
+        cursor.execute("SELECT username, password,no_of_active_sessions FROM chat_app_users WHERE username=%s", (username,))
         user = cursor.fetchone()
-        cursor.close()
         #Comparing the user provided password with the hashed password stored in the database
-        match_pwd = check_password(hashed_password=user[1].encode('utf-8'), user_entered_password= password)
+        if user:
+            match_pwd = check_password(hashed_password=user[1].encode('utf-8'), user_entered_password= password)
+        #If user is found in the DB
+        print("Query Result : ",user)
         if user and match_pwd:
+            active_sessions= 0 if user[2] is None else int(user[2])
+            print("Active sessions : ",active_sessions)
+            #If number of active sessions is not more than 2
+            if active_sessions<=1:
+               
+                query = f"UPDATE chat_app_users SET no_of_active_sessions = {active_sessions + 1}, last_logged_in_at = '{dt.datetime.now()}' WHERE username = '{username}';"
+            
+                cursor.execute(query)
+                mysql.connection.commit()
+            else:
+                return render_template('login.html', error="Maximum number of sessions reached!")
             session['username'] = user[0]
+             
+            cursor.close()
             return redirect(url_for('message'))
         else:
             return render_template('login.html', error="Invalid Username or Password")
@@ -99,6 +129,8 @@ def register():
         username = request.form.get('username')
         password = request.form.get('password')
         confirm_password = request.form.get('confirm-password')
+        email= request.form.get("emailid")
+        whatssap = request.form.get("phone")
         cursor = mysql.connection.cursor()
         # Regular expression to allow only alphanumeric characters and underscores 
         pattern = re.fullmatch(r"^(\w)+$",username) 
@@ -115,15 +147,33 @@ def register():
         user = cursor.fetchone()
         if user:
             return render_template('register.html', error="The username is already taken!\n Please try some other username")
-        query = "INSERT INTO chat_app_users (username, password, joining_date) VALUES (%s, %s, %s)"
-        cursor.execute(query, (username, hash_password(password), dt.datetime.now()))
+        if email and whatssap:
+             query = "INSERT INTO chat_app_users (username, password,email,phone, joining_date) VALUES (%s,%s,%s, %s, %s)"
+             cursor.execute(query, (username, hash_password(password), email,whatssap,dt.datetime.now()))
+        elif email:
+            query = "INSERT INTO chat_app_users (username, password,email, joining_date) VALUES (%s,%s, %s, %s)"
+            cursor.execute(query, (username, hash_password(password), email,dt.datetime.now()))
+        elif whatssap:
+             query = "INSERT INTO chat_app_users (username, password,phone, joining_date) VALUES (%s,%s, %s, %s)"
+             cursor.execute(query, (username, hash_password(password), whatssap,dt.datetime.now()))
         mysql.connection.commit()
         cursor.close()
-        return redirect(url_for('login'))
+        perform_action("Your account has been successfully created !\n Start chatting now!")
+        
+        return redirect(url_for('register'))
     return render_template('register.html')
 
 @app.route("/logout")
 def logout():
+    username = session['username']
+    cursor= mysql.connection.cursor()
+    cursor.execute("SELECT no_of_active_sessions,last_logged_out FROM chat_app_users WHERE username=%s", (username,))
+    user = cursor.fetchone()
+    active_sessions= 0 if user[0] is None else int(user[0])
+    print("Active sessions : ",active_sessions)
+    query = f"UPDATE chat_app_users SET no_of_active_sessions = {active_sessions - 1}, last_logged_out = '{dt.datetime.now()}' WHERE username = '{username}';"
+    cursor.execute(query)
+    mysql.connection.commit()
     session.pop('username', None)
     return redirect(url_for('home'))
 

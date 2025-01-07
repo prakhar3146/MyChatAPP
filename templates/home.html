@@ -23,8 +23,11 @@
 .welcome{
     display: flex;
     flex-direction: column;
-    background-color: rgb(110, 109, 118);
-    opacity: 0.8;
+    background-color:rgba(105, 66, 66, 0.5);
+    flex-wrap: wrap;
+    margin-top: 1em;
+    margin-left: 5em;
+    margin-right: 5em;
 }
 h1,h2,h3,h4,a{
     display: flex;
@@ -38,7 +41,7 @@ h1,h2,h3,h4,a{
     font-size: x-large;
 }
 .button {
-    display: inline-block;
+    display:flex;
     padding: 10px 20px;
     font-size: 16px;
     color: white;
@@ -48,21 +51,42 @@ h1,h2,h3,h4,a{
     text-align: center;
     text-decoration: none;
     cursor: pointer;
+    align-self: center;
+    opacity: 1.0;
 }
 
 .button:hover {
     background-color: #0056b3;
 }
-
+body {
+ 
+    background-image: url('static/images/login.png');
+    object-fit: cover;
+    min-height: 100%;
+    min-width: 100%;
+    background-size: cover; /* This will make sure the image covers the entire background */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    background-attachment: fixed; /* Ensures the background image stays fixed during scroll */
+}
+header{
+    color: gold;
+    display: grid;
+    place-content: center;
+    font-size: xxx-large;
+    font-stretch: extra-expanded;
+    font-weight: 600;
+    font-family: sans-serif;
+    letter-spacing: 2px;
+    color: yellow;
+    text-shadow: 2px 2px 4px rgb(0 0 0 / 67%), 4px 4px 8px #f44336;
+}
     </style>
 </head>
 <body>
     <header>
-        <video autoplay="" muted="" loop="" id="myVideo">
-            <source src="{{ url_for('static', filename='videos/background_video.mp4') }}" type="video/mp4">
-        </video>
+        Welcome to ChatterIO
     </header>
-    <p>Login Page</p>
+    
     <div class="welcome" id="welcome-page">
         
         
