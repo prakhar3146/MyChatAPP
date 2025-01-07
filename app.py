@@ -165,6 +165,8 @@ def register():
 
 @app.route("/logout")
 def logout():
+    if 'username' not in session:
+        return redirect(url_for('home'))
     username = session['username']
     cursor= mysql.connection.cursor()
     cursor.execute("SELECT no_of_active_sessions,last_logged_out FROM chat_app_users WHERE username=%s", (username,))
