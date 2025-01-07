@@ -156,6 +156,10 @@ def register():
         elif whatssap:
              query = "INSERT INTO chat_app_users (username, password,phone, joining_date) VALUES (%s,%s, %s, %s)"
              cursor.execute(query, (username, hash_password(password), whatssap,dt.datetime.now()))
+        else:
+             query = "INSERT INTO chat_app_users (username, password, joining_date) VALUES (%s,%s,%s)"
+             cursor.execute(query, (username, hash_password(password),dt.datetime.now()))
+       
         mysql.connection.commit()
         cursor.close()
         perform_action("Your account has been successfully created !\n Start chatting now!")
