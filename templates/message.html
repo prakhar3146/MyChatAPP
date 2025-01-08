@@ -58,12 +58,16 @@
 
         }
         socket.on("connect", () => {
+            setInterval(() => {
+            console.log("Sending ping...");
+            socket.emit("ping");
+        }, 5000); // Send a ping every 5 seconds
             let p = document.createElement("p")
             p.classList.add("user-notifications")
             p.innerText = "You are connected"
             
              messageContainer.appendChild(p)
-        })
+        });
         let messageInput = document.getElementById("messageInput");
     
         const form = document.getElementById('send-container')
@@ -93,6 +97,11 @@
         const name = prompt("Enter Your Name To Join")
         const currentUser = String(name)
         socket.emit('new-user-joined', name)
+        // Handle pong response
+        socket.on("pong", () => {
+        console.log("Pong received from server.");
+        });
+
         // It will listen to the event that was sent by the app.py(server) using the send/emit function and 
         //catch the message that was sent by the send function and then create a paragraph element
         // It will then alter/add the innertext to the paragraph element and append it to the parent 

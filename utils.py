@@ -1,10 +1,83 @@
+import smtplib
+from email.message import EmailMessage
 import string, re
 import os, shutil
 import datetime as dt
+from bs4 import BeautifulSoup
 
 import pandas as pd
 from openpyxl import load_workbook
 import bcrypt
+
+
+#This function sends an email notification
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
+def send_mail(reciever, subject, message, sender, smtp="smtp.gmail.com", port=587, secret_key="cblibrpjtiqbohla"):
+    try:
+        server = smtplib.SMTP(smtp, port)
+        server.starttls()
+        server.login(sender, secret_key)
+
+        # Create the email message
+        email = MIMEMultipart("alternative")
+        email['From'] = sender
+        email['To'] = reciever
+        email['Subject'] = subject
+
+        # Attach the HTML content to the email
+        email.attach(MIMEText(message, 'html'))
+
+        # Send the email
+        server.send_message(email)
+        server.quit()
+        return "success"
+    except Exception as e:
+        print("Failed to send email notification: ", e)
+        return "failed"
+
+#To fetch and prepare the email template
+from bs4 import BeautifulSoup
+
+def prepare_email_template_and_send(credentials_dict={}):
+    if 'sender' not in credentials_dict.keys():
+        return False
+    
+    template_path = credentials_dict['invite_template_path']
+    sender = credentials_dict['sender']
+    password = credentials_dict['password']
+    port = credentials_dict['port']
+    host_domain = credentials_dict['host_domain_link']
+    reciever = credentials_dict['reciever']
+    username = credentials_dict['username']
+    
+    if credentials_dict['notification_type'] == "registration_success":
+        subject = f"Successfully registered as {username} - Chatter IO"
+        
+    # Load the email template
+    with open(template_path, 'r') as file:
+        content = file.read()
+        
+    # Parse the HTML
+    soup = BeautifulSoup(content, 'lxml')
+    
+    # Modify text in a specific tag
+    header = soup.find('h3')
+    header.string = f"This to notify you that your user id: {username} associated with {reciever}\n has been created!\n"
+    header = soup.find('h4')
+    header.string = "Welcome to the community!"
+    
+    # Add new content
+    # new_paragraph = soup.new_tag('p')
+    # new_paragraph.string = "This is a newly added paragraph."
+    # soup.body.append(new_paragraph)
+    
+    # Send email with HTML content
+    result = send_mail(subject=subject, message=str(soup), sender=sender, secret_key=password, reciever=reciever)
+    return result == "success"
+
 
 
 #The function encrypts the string provided as an argument and returns it

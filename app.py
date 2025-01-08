@@ -1,9 +1,10 @@
 from flask import Flask, render_template, request, redirect, session, url_for,flash
-from flask_socketio import SocketIO, send, emit
+from flask_socketio import SocketIO, send, emit, disconnect
 from flask_mysqldb import MySQL
 import datetime as dt
-import re
-from utils import hash_password,check_password
+import re, time
+#import eventlet
+from utils import hash_password,check_password,prepare_email_template_and_send
 
 app = Flask(__name__)
 app.secret_key = "Hello12345"
@@ -17,13 +18,16 @@ app.config['MYSQL_DB'] = 'flask_users'
 mysql = MySQL(app)
 
 # Enable SocketIO
-socketio = SocketIO(app, cors_allowed_origins="*")
+socketio = SocketIO(app,ping_interval=5, ping_timeout=10, async_mode='gevent')
 
+clients= {}
 dict_of_user = {}
 
 @socketio.on('connect')
 def handle_connect():
     print('Client connected')
+    clients[request.sid] = time.time()  # Track last activity time
+
     emit('welcome', {'message': 'Welcome to the server!'})
 
 @socketio.on('disconnect')
@@ -57,6 +61,14 @@ def send_message(message):
     message = message + "\n at " + dt.datetime.now().strftime("%d-%m-%Y %H:%M:%S")
     print("Sender:", sender, "\nmessage:", dict_of_user)
     emit('recieve', {'message': message, 'name': sender}, broadcast=True, include_self=False)
+
+@socketio.on('ping')
+def handle_ping():
+    """Handle client pings and respond with pong."""
+    print(f"Ping received from client: {request.sid}")
+    clients[request.sid] = time.time()  # Update last activity time
+    socketio.emit('pong', room=request.sid)  # Respond with a pong
+
 
 
 def trigger_action(message): 
@@ -139,7 +151,8 @@ def register():
         #Check if the password is not empty
         if len(password) < 8:
             return render_template('register.html', error="The password has to be a minimum of 8 characters")
-        
+        if not email or '@' not in email:
+             return render_template('register.html', error="Please enter a valid Email ID")
         if password!=confirm_password:
             return render_template('register.html', error="The entred password and the confirm password sections did not match!")
         #Checking if the username already exists
@@ -159,7 +172,21 @@ def register():
         else:
              query = "INSERT INTO chat_app_users (username, password, joining_date) VALUES (%s,%s,%s)"
              cursor.execute(query, (username, hash_password(password),dt.datetime.now()))
-       
+        #Send Registration Notification
+        query= """SELECT * FROM email_notification_creds ORDER BY id DESC LIMIT 1;"""
+        cursor.execute(query)
+        row= cursor.fetchone()
+        column_names = [description[0] for description in cursor.description]
+        cred_dict = dict(zip(column_names, row))
+
+        cred_dict['reciever']= email
+        cred_dict['inviting_person']= username
+        cred_dict['notification_type']= "registration_success"
+        cred_dict['username']= username
+        #Sending email notification
+        
+        send_notification= prepare_email_template_and_send(cred_dict)
+
         mysql.connection.commit()
         cursor.close()
         perform_action("Your account has been successfully created !\n Start chatting now!")
@@ -182,6 +209,23 @@ def logout():
     mysql.connection.commit()
     session.pop('username', None)
     return redirect(url_for('home'))
+
+
+def monitor_clients():
+    """Monitor client health and disconnect unresponsive clients."""
+    with app.app_context():
+        while True:
+            current_time = time.time()
+            for sid, last_activity in list(clients.items()):
+                if current_time - last_activity > 10:  # Timeout threshold (10 seconds)
+                    print(f"Client {sid} is unresponsive, disconnecting...")
+                    disconnect(sid)
+                    clients.pop(sid, None)
+            socketio.sleep(5)  # Check every 5 seconds
+
+
+# Start the client monitoring in a background thread
+socketio.start_background_task(monitor_clients)
 
 if __name__ == "__main__":
     socketio.run(app, debug=True)
