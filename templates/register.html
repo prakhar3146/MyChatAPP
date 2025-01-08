@@ -43,7 +43,7 @@ h1,form{
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 4px 4px 8px rgba(0, 0, 0, 0.3);
 
 }
-#submit {
+#submit,.button {
     width: 100px;
     height: 60px;
 
@@ -68,6 +68,7 @@ justify-content: space-around;
     position: -webkit-sticky;
     background-color: black;
     margin: auto;
+    margin-bottom: 2px;
 
 }
 h1{
@@ -79,37 +80,21 @@ h1{
 
     background-color: lightgray;
     color: rgb(245, 242, 242);
+}
+.button:hover {
 
+background-color: lightgray;
+color: rgb(245, 242, 242);
 }
 p{
     display: flex;
     align-self: center;
     font-size: x-large;
 }
-.button {
-    display: flex;
-    padding: 10px 20px;
-    font-size: 16px;
-    color: white;
-    background-color: #010102;
-    border: none;
-    border-radius: 5px;
-    text-align: center;
-    text-decoration: none;
-    cursor: pointer;
-    max-width: 20%;
-    margin: auto;
-    flex-direction: row;
-    align-items: center;
-    margin-bottom: 10px;
-}
 
-.button:hover {
-    background-color: #0056b3;
-}
 body {
  
- background-image: url('static/images/landing.jpg');
+ background-image: url('static/images/main.jpg');
  object-fit: cover;
  min-height: 100%;
  min-width: 100%;
@@ -158,8 +143,11 @@ input{
               {% endwith %}
     </div>
     <div class="container">
-        <a id="login" href="{{ url_for('login') }}" class="button" >Login</a>
-        <a id="homepage" href="{{ url_for('home') }}" class="button" >Back To Homepage</a>
+        <!-- <a id="login" href="{{ url_for('login') }}" class="button" >Login</a>
+        <a id="homepage" href="{{ url_for('home') }}" class="button" > Homepage</a> -->
+        <button id="register-now" class="button" onclick="location.href='{{ url_for('login') }}'">Login Page</button> 
+        <button id="homepage" class="button" onclick="location.href='{{ url_for('home') }}'">Back To Homepage</button>
+    
     <h1 class="pagename">Registration Page</h1>
     {% if error %}
         <p style="color: red;">{{ error }}</p>

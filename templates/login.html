@@ -41,7 +41,7 @@ h1,form{
     flex-direction: column;
    
 }
-#submit {
+#submit,.button {
     width: 100px;
     height: 60px;
     justify-content: space-around;
@@ -60,6 +60,7 @@ h1,form{
     align-self: flex-end;
     position: -webkit-sticky;
     background-color: black;
+    margin-bottom: 2px;
     /* backdrop-filter: blur(2px); */
 }
 
@@ -69,35 +70,23 @@ h1,form{
     color: rgb(245, 242, 242);
 
 }
+.button:hover {
+
+background-color: lightgray;
+color: rgb(245, 242, 242);
+
+}
 p{
     display: flex;
     align-self: center;
     font-size: x-large;
 }
-.button {
-    display: flex;
-    padding: 10px 20px;
-    font-size: 16px;
-    color: white;
-    background-color: #010102;
-    border: none;
-    border-radius: 5px;
-    text-align: center;
-    text-decoration: none;
-    cursor: pointer;
-    max-width: 20%;
-    margin: auto;
-    flex-direction: row;
-    align-items: center;
-    margin-bottom: 20px;
-}
 
-.button:hover {
-    background-color: #0056b3;
-}
+
+
 body {
  
- background-image: url('static/images/landing.jpg');
+ background-image: url('static/images/main.jpg');
  object-fit: cover;
  min-height: 100%;
  min-width: 100%;
@@ -105,7 +94,7 @@ body {
  background-repeat: no-repeat; /* Prevents the image from repeating */
  background-attachment: fixed; /* Ensures the background image stays fixed during scroll */
 }
-h1,form{
+form{
     
     align-self: center;
     opacity: 1;
@@ -117,6 +106,11 @@ h1,form{
     color: yellow;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5), 4px 4px 8px rgba(0, 0, 0, 0.3);
 
+}
+h1 {
+    /* color: aliceblue; */
+    color: yellow;
+    text-shadow: 2px 2px 4px #000000, 4px 4px 8px rgb(0 0 0 / 30%);
 }
 #username::placeholder{
     color: gray;
@@ -143,8 +137,10 @@ input{
         </video> -->
     </header>
     <div class="container">
-        <a id="register-now"href="{{ url_for('register') }}" class="button" >Register Now</a>
-        <a id="homepage"href="{{ url_for('home') }}" class="button" >Back To Homepage</a>
+        <!-- <a id="register-now"href="{{ url_for('register') }}" class="button" >Register Now</a>
+        <a id="homepage"href="{{ url_for('home') }}" class="button" >Back To Homepage</a> -->
+        <button id="register-now" class="button" onclick="location.href='{{ url_for('register') }}'">Register Now</button> 
+        <button id="homepage" class="button" onclick="location.href='{{ url_for('home') }}'">Back To Homepage</button>
     <h1>Login Page</h1>
     {% if error %}
         <p style="color: red;">{{ error }}</p>

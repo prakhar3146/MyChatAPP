@@ -23,7 +23,7 @@
 .welcome{
     display: flex;
     flex-direction: column;
-    background-color:rgba(105, 66, 66, 0.5);
+    background-color: rgb(0 0 0 / 79%);
     flex-wrap: wrap;
     margin-top: 1em;
     margin-left: 5em;
@@ -36,9 +36,18 @@ h1,h2,h3,h4,a{
     opacity: 1;
     margin: 2px;
 }
+h1{
+    color: orange;
+    text-shadow: 2px 2px 4px rgb(255 233 233 / 50%), 4px 4px 8px rgb(0 0 0 / 30%);
+}
 #login,#register-now {
-    font-family: cursive;
+    font-family: sans-serif;
     font-size: x-large;
+    font-weight: 600;
+    color: initial;
+    text-shadow: 2px 2px 4px rgb(0 0 0 / 50%), 4px 4px 8px rgb(0 0 0 / 30%);
+    letter-spacing: 1px;
+    margin-bottom: 30px;
 }
 .button {
     display:flex;
@@ -94,7 +103,7 @@ header{
         <p>Logged in as: {{ username }}</p>
          <a href="{{ url_for('logout') }}">Logout</a> 
         {% else %} 
-        <h1>Please Log in to continue</h1>
+        <h1>Your anonymous group chat app</h1>
         <h2>Alredy a member?</h2><br>
         <a id="login" href="{{ url_for('login') }}" class="button" >Login</a> 
         <h3>Not a member?</h3><br>
