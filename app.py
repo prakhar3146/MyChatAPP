@@ -228,4 +228,4 @@ def monitor_clients():
 socketio.start_background_task(monitor_clients)
 
 if __name__ == "__main__":
-    socketio.run(app, debug=True)
+    socketio.run(app, debug=False, host='0.0.0.0', port=8000)
