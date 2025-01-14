@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Homepage</title>
     <style>
-        
+        /* Define the fade-in animation */ @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 #myVideo {
     position: fixed;
     right: 0;
@@ -76,6 +76,7 @@ body {
     background-size: cover; /* This will make sure the image covers the entire background */
     background-repeat: no-repeat; /* Prevents the image from repeating */
     background-attachment: fixed; /* Ensures the background image stays fixed during scroll */
+    animation: fadeIn 2s ease-in-out;
 }
 header{
     color: gold;

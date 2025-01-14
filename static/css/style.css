@@ -17,6 +17,7 @@ body {
     justify-content: center;
     align-items: center;
     overflow: auto;
+    animation: fadeIn 4s ease-in-out;
 }
 
 /* Main Background */
@@ -98,41 +99,44 @@ body {
 .message-left {
     display: flex;
     /* max-width: fit-content; */
-    /* Limit the width of messages */
     margin: 10px 0;
-    /* Add spacing between messages */
     padding: 10px;
     border: 2px solid black;
     flex-direction: column;
     border-radius: 10px;
     word-wrap: break-word;
-    /* Break long words */
     white-space: pre-wrap;
-    /* Preserve spaces and line breaks */
-    background-color: rgb(52, 101, 174);
+    background-color: rgb(238 193 176);
     left: 0;
     align-self: flex-start;
     justify-content: center;
+    font-style: oblique;
+    letter-spacing: 2px;
+    font-family: monospace;
+    font-weight: 700;
+    line-height: 1.4em;
+    border-color: lavender;
 }
 
 .message-right {
     display: flex;
     /* max-width: fit-content; */
-    /* Limit the width of messages */
     margin: 10px 0;
-    /* Add spacing between messages */
     padding: 10px;
-    border: 2px solid black;
+    border: 2px solid #000000;
     flex-direction: column;
     border-radius: 10px;
     right: 0%;
     word-wrap: break-word;
-    /* Break long words */
     white-space: pre-wrap;
-    /* Preserve spaces and line breaks */
-    background-color: rgb(87, 101, 121);
+    background-color: rgb(195 204 218);
     align-self: flex-end;
     justify-content: center;
+    font-style: initial;
+    font-family: math;
+    font-weight: 600;
+    letter-spacing: 1px;
+    box-shadow: 1px 1px black, 1px 1px black, 1px 5px #000000;
 }
 
 
@@ -147,26 +151,26 @@ body {
 }
 
 /* Message Input */
-#messageInp {
-    height: 5vh;
-    width: 60vw;
-    margin: 5px;
-    border: 2px solid black;
-    border-radius: 6px;
-    object-fit: fill;
+#messageInput {
+    border: 5px solid black;
+    width: 300px;
+    border-radius: 5px;
+    margin-right: 5px;
+    height: 20px;
 }
 
 /* Submit Button */
 #submit-btn {
     cursor: pointer;
     width: fit-content;
-    border: 2px solid black;
+    border: 2px solid #7a7a7a;
     border-radius: 6px;
-    height: 34px;
+    height: 50px;
     object-fit: fill;
     opacity: 0.8;
-    color: rgb(246, 239, 239) ;/* Text color */ 
-    background-color:rgb(0, 0, 0);
+    color: rgb(246, 239, 239);
+    background-color: rgb(0, 0, 0);
+    width: 90px;
 
 }
 #submit-btn:hover{
