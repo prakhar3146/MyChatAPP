@@ -15,7 +15,7 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-def send_mail(reciever, subject, message, sender, smtp="smtp.gmail.com", port=587, secret_key="cblibrpjtiqbohla"):
+def send_mail(reciever, subject, message, sender, smtp="smtp.gmail.com", port=587, secret_key="cblibrpjtiqbohlajj"):
     try:
         server = smtplib.SMTP(smtp, port)
         server.starttls()
