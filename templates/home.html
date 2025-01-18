@@ -37,8 +37,7 @@ h1,h2,h3,h4,a{
     margin: 2px;
 }
 h1{
-    color: orange;
-    text-shadow: 2px 2px 4px rgb(255 233 233 / 50%), 4px 4px 8px rgb(0 0 0 / 30%);
+      color: #039be5
 }
 #login,#register-now {
     font-family: sans-serif;
@@ -79,7 +78,7 @@ body {
     animation: fadeIn 2s ease-in-out;
 }
 header{
-    color: gold;
+    /* color: rgb(255, 255, 255); */
     display: grid;
     place-content: center;
     font-size: xxx-large;
@@ -87,7 +86,7 @@ header{
     font-weight: 600;
     font-family: sans-serif;
     letter-spacing: 2px;
-    color: yellow;
+    color: white;
     text-shadow: 2px 2px 4px rgb(0 0 0 / 67%), 4px 4px 8px #f44336;
 }
     </style>
@@ -104,7 +103,7 @@ header{
         <p>Logged in as: {{ username }}</p>
          <a href="{{ url_for('logout') }}">Logout</a> 
         {% else %} 
-        <h1>Your anonymous group chat app</h1>
+        <h1>Your anonymous group chat room</h1>
         <h2>Alredy a member?</h2><br>
         <a id="login" href="{{ url_for('login') }}" class="button" >Login</a> 
         <h3>Not a member?</h3><br>
