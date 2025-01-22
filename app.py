@@ -10,7 +10,8 @@ app = Flask(__name__)
 app.secret_key = "Hello12345"
 
 # MySQL DB Configuration
-app.config['MYSQL_HOST'] = 'localhost'
+#Just for a random commit
+app.config['MYSQL_HOST']  = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'root'
 app.config['MYSQL_DB'] = 'flask_users'
