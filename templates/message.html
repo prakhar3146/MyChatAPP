@@ -13,7 +13,8 @@
         integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
         crossorigin="anonymous"></script>
 
-    <title>Document</title>
+    <title>ChatterIO by Prakhar</title>
+    <link rel="icon" href="{{ url_for('static', filename='images/portfolio_logo.png') }}" type="image/x-icon">
 </head>
 
 <body>
@@ -44,7 +45,7 @@
         let leftMessageContainer = document.querySelector(".message-left");
         let rightMessageContainer = document.querySelector(".message-right");
         // Defining a function to append messages
-        let audio_ping= new Audio("MyChatApp/static/audio/ping.mp3")
+        let audio_ping= new Audio("./static/audio/ping.mp3")
         function appendMessage(message, position,container) { 
             let messageElementNew = document.createElement("div"); 
             messageElementNew.innerText = message; // Use the message parameter 
