@@ -2,12 +2,15 @@ from flask import Flask, render_template, request, redirect, session, url_for,fl
 from flask_socketio import SocketIO, send, emit, disconnect
 from flask_mysqldb import MySQL
 import datetime as dt
+# from flask_cors import CORS
+import random
 import re, time
 #import eventlet
 from utils import hash_password,check_password,prepare_email_template_and_send
 
 app = Flask(__name__)
 app.secret_key = "Hello12345"
+# CORS(app)
 
 # MySQL DB Configuration
 #Just for a random commit
@@ -77,6 +80,12 @@ def trigger_action(message):
         response = perform_action(message= message) # You can access the response or handle other logic here 
         print("Flash Response : ",response)
 
+#For generating otp for email verification
+def generate_otp(length=6):
+    """Generate a 6-digit OTP."""
+    otp = ''.join([str(random.randint(0, 9)) for _ in range(length)])
+    return otp
+
 #Defining Routes
 #To flash messages on the frontend from the backend
 @app.route('/perform_action', methods=['POST']) 
@@ -127,7 +136,7 @@ def login():
                 cursor.execute(query)
                 mysql.connection.commit()
             else:
-                return render_template('login.html', error="Maximum number of sessions reached!")
+                return render_template('login.html', error="Maximum number of active sessions reached!")
             session['username'] = user[0]
              
             cursor.close()
@@ -161,6 +170,10 @@ def register():
         user = cursor.fetchone()
         if user:
             return render_template('register.html', error="The username is already taken!\n Please try some other username")
+        #Email verification
+        otp= generate_otp()
+        
+        
         if email and whatssap:
              query = "INSERT INTO chat_app_users (username, password,email,phone, joining_date) VALUES (%s,%s,%s, %s, %s)"
              cursor.execute(query, (username, hash_password(password), email,whatssap,dt.datetime.now()))

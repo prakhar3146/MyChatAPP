@@ -250,3 +250,26 @@ justify-content: space-around;
         align-items: baseline;
 }
 }
+
+footer {
+    background-color: #460e0e;
+    padding: 20px;
+    text-align: center;
+    font-size: 100%;
+    color: #ecf0f1;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+
+    /* padding: inherit; */
+    padding: 5%;
+    margin-top: 5%;
+}
+
+footer p {
+  margin: 0;
+    color: azure;
+    letter-spacing: 3px;
+    font-family: emoji;
+    font-style: oblique;
+}
